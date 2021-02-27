@@ -162,6 +162,6 @@ int main()
 		}
 	}
 
-	// After chatting close the socket 
+	//After chatting close the socket 
 	close(sockfd); 
 }
