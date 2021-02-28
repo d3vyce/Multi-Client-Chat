@@ -1,6 +1,5 @@
 #include "client.h"
 
-
 void help() {
 	printf("\033[0;36m!help Command\n");
 	printf("!exit : ferme le chat\n");

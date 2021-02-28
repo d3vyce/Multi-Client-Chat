@@ -7,10 +7,11 @@ int send_message(Client tab[MAX_CLIENT], char buff[MAX], int socket, int id) {
 	bzero(message, sizeof(message)); 
 
 	if (id != -1) {
-		strncpy(message, tab[id].pseudo, MAX - 1);
-		strncat(message, " : ", sizeof message - strlen(message) - 1);
+		strncpy(message, "\033[0;34m", MAX - 1);
+		strncat(message, tab[id].pseudo, sizeof tab[id].pseudo - strlen(message) - 1);
+		strncat(message, "\033[0m : ", sizeof message - strlen(message) - 1);
 	}
-
+	
 	strncat(message, buff, sizeof message - strlen(message) - 1);
 	
 	for(i=0; i < MAX_CLIENT; i++) {
