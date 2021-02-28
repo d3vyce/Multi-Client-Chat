@@ -1,13 +1,3 @@
-#ifdef WIN32
-
-#include <winsock2.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <string.h>
-
-#elif defined (linux)
-
 #include <netdb.h> 
 #include <stdio.h> 
 #include <stdlib.h> 
@@ -17,8 +7,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <errno.h>
-
-#endif
 
 #define MAX 1024 //1kbit buffer 
 #define SA struct sockaddr
