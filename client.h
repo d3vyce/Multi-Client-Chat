@@ -8,7 +8,7 @@
 #include <unistd.h>
 #include <errno.h>
 
-#define MAX 80 
+#define MAX 1024 //1kbit buffer 
 #define SA struct sockaddr
 
 void help();
