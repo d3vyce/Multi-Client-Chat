@@ -8,14 +8,14 @@ void help() {
 	printf("!ping : affiche le ping entre le serveur et vous\n\033[0m");
 }
 
-int init_connexion(int port, char* pseudo) {
+int init_connexion(char* ip, int port, char* pseudo) {
 	int socket_client, connfd; 
 	struct sockaddr_in servaddr, cli;
 	
 	// creation socket
 	socket_client = socket(AF_INET, SOCK_STREAM, 0); 
 	if (socket_client == -1) { 
-		printf("socket creation failed...\n"); 
+		printf("Erreur : socket creation failed...\n"); 
 		exit(0); 
 	} 
 	else
@@ -24,12 +24,12 @@ int init_connexion(int port, char* pseudo) {
 
 	// ip/port serveur
 	servaddr.sin_family = AF_INET; 
-	servaddr.sin_addr.s_addr = inet_addr("127.0.0.1"); 
+	servaddr.sin_addr.s_addr = inet_addr(ip); 
 	servaddr.sin_port = htons(port); 
 
 	// connexion au serveur
 	if (connect(socket_client, (SA*)&servaddr, sizeof(servaddr)) != 0) { 
-		printf("connection with the server failed...\n"); 
+		printf("Erreur : c\n"); 
 		exit(0); 
 	} else {
 		write(socket_client, pseudo, sizeof(pseudo));
@@ -85,13 +85,14 @@ int main(int argc, char *argv[]) {
 	int socket_client;
 
 	//Check argument
-	if(argc != 3) {
-		printf("Usage : ./client [pseudo] [port]\n");
+	if(argc != 4) {
+		printf("Usage : ./client [pseudo] [IP] [Port]\n");
 		return -1;
 	}
 
 	char* pseudo = argv[1];
-	int port = atoi(argv[2]);
+	char* ip = argv[2];
+	int port = atoi(argv[3]);
 
 	//check port range
 	if(port < 1024 || port > 49151) {
@@ -100,7 +101,7 @@ int main(int argc, char *argv[]) {
 	}
 	
 	//socket creation + connection to server
-	socket_client = init_connexion(port, pseudo);
+	socket_client = init_connexion(ip, port, pseudo);
 
 	//chat function
 	chat(socket_client, pseudo); 

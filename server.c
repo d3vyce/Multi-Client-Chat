@@ -36,8 +36,6 @@ int send_online(Client tab[MAX_CLIENT], int socket) {
 	write(socket, message, sizeof(message));
 }
 
-
-// Driver function 
 int main() 
 { 
 	int sockfd, connfd, len; 
