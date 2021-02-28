@@ -39,8 +39,7 @@ int init_connexion(int port, char* pseudo) {
 	return socket_client;
 }
 
-void chat(int sockfd, char* pseudo) 
-{ 
+void chat(int sockfd, char* pseudo) { 
 	char buff[MAX]; 
 	int n, act;
 	fd_set readfds;
@@ -59,23 +58,23 @@ void chat(int sockfd, char* pseudo)
 			bzero(buff, sizeof(buff)); 
 			n = 0; 
 			while ((buff[n++] = getchar()) != '\n');
-			if(strncmp(buff,"!exit", strlen(buff)-1) == 0) {
+			if(strncmp(buff,"!exit", strlen(buff)-1) == 0) { //!exit -> return to main
 				return;
-			} else if (strncmp(buff,"!help", strlen(buff)-1) == 0) {
+			} else if (strncmp(buff,"!help", strlen(buff)-1) == 0) { //!help -> print help
 				help();
-			} else if (strncmp(buff,"!online", strlen(buff)-1) == 0) {
+			} else if (strncmp(buff,"!online", strlen(buff)-1) == 0) { //!online -> send to server, read & print the answer
 				write(sockfd, buff, sizeof(buff)); 
 				read(sockfd, buff, sizeof(buff));
 				printf("%s\n", buff);
-			} else {
+			} else { //send message to server
 				write(sockfd, buff, sizeof(buff)); 
 				bzero(buff, sizeof(buff)); 
 			}
 		} else if (FD_ISSET(sockfd, &readfds)) {
-			if(read(sockfd, buff, sizeof(buff)) == 0) {
-				printf("\033[1;33mServer disconnected ! (connexion lost)\033[0m\n");
+			if(read(sockfd, buff, sizeof(buff)) == 0) { //Server connection lost
+				printf("\033[1;33mServer disconnected ! (connection lost)\033[0m\n");
 				exit(1);
-			} else {
+			} else { //Print from server
 				printf("%s", buff);
 			}
 		}
@@ -85,7 +84,7 @@ void chat(int sockfd, char* pseudo)
 int main(int argc, char *argv[]) { 
 	int socket_client;
 
-	//verification du nombre d'arguments
+	//Check argument
 	if(argc != 3) {
 		printf("Usage : ./client [pseudo] [port]\n");
 		return -1;
@@ -94,18 +93,18 @@ int main(int argc, char *argv[]) {
 	char* pseudo = argv[1];
 	int port = atoi(argv[2]);
 
-	//verification du port
+	//check port range
 	if(port < 1024 || port > 49151) {
 		printf("Erreur : le port doit être entre 1024 et 49151\n");
 		return -1;
 	}
 	
-	//creation du socket + connexion au serveur
+	//socket creation + connection to server
 	socket_client = init_connexion(port, pseudo);
 
-	//function for chat 
+	//chat function
 	chat(socket_client, pseudo); 
 
-	//fermeture du socket
+	//close socket
 	close(socket_client); 
 }
